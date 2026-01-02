@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import Musical from "./pages/Musical";
 import Darpe from "./pages/Darpe";
 import Ebi from "./pages/Ebi";
+import ReforcosColetas from "./pages/ReforcosColetas";
+import Evangelizacao from "./pages/Evangelizacao";
 import Relatorios from "./pages/Relatorios";
 import Congregacoes from "./pages/Congregacoes";
 import Ministerio from "./pages/Ministerio";
@@ -27,6 +29,8 @@ const App = () => (
           <Route path="/musical" element={<Musical />} />
           <Route path="/darpe" element={<Darpe />} />
           <Route path="/ebi" element={<Ebi />} />
+          <Route path="/reforcos-coletas" element={<ReforcosColetas />} />
+          <Route path="/evangelizacao" element={<Evangelizacao />} />
           <Route path="/relatorios" element={<Relatorios />} />
           <Route path="/congregacoes" element={<Congregacoes />} />
           <Route path="/ministerio" element={<Ministerio />} />
