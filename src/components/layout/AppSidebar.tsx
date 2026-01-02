@@ -3,14 +3,16 @@ import {
   Music, 
   BookOpen, 
   FileText, 
-  Church, 
+  Building2, 
   Users, 
   ListChecks,
   Menu,
   X,
   Calendar,
   GraduationCap,
-  Heart
+  Heart,
+  HandCoins,
+  Megaphone
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -22,8 +24,10 @@ const menuItems = [
   { title: "Musical", url: "/musical", icon: Music },
   { title: "DARPE", url: "/darpe", icon: Heart },
   { title: "EBI", url: "/ebi", icon: GraduationCap },
+  { title: "Reforços de Coletas", url: "/reforcos-coletas", icon: HandCoins },
+  { title: "Evangelização", url: "/evangelizacao", icon: Megaphone },
   { title: "Relatórios", url: "/relatorios", icon: FileText },
-  { title: "Congregações", url: "/congregacoes", icon: Church },
+  { title: "Congregações", url: "/congregacoes", icon: Building2 },
   { title: "Ministério", url: "/ministerio", icon: Users },
   { title: "Listas", url: "/listas", icon: ListChecks },
   { title: "Agendamentos", url: "/agendamentos", icon: Calendar },
@@ -64,7 +68,7 @@ export function AppSidebar() {
           {/* Logo */}
           <div className="flex h-20 items-center gap-3 px-6 border-b border-sidebar-border">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg gradient-primary shadow-glow">
-              <Church className="h-5 w-5 text-primary-foreground" />
+              <Building2 className="h-5 w-5 text-primary-foreground" />
             </div>
             <div>
               <h1 className="text-lg font-semibold text-sidebar-foreground">CCB Gestão</h1>
