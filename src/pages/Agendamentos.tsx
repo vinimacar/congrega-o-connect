@@ -1,7 +1,8 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Plus, Calendar, Clock, MapPin, Users } from "lucide-react";
+import { Calendar, Clock, MapPin, Users } from "lucide-react";
 import { useState } from "react";
+import { EventForm } from "@/components/forms";
 
 const events = [
   {
@@ -101,10 +102,7 @@ const Agendamentos = () => {
                 Calendário
               </Button>
             </div>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              Novo Evento
-            </Button>
+            <EventForm />
           </div>
         </div>
 
