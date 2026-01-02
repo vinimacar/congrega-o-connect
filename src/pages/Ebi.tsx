@@ -1,24 +1,25 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Plus, BookOpen, Users, GraduationCap } from "lucide-react";
+import { Plus, BookOpen, Users, GraduationCap, Calendar } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const classes = [
-  { id: 1, name: "Turma A - Infantil", students: 25, teacher: "Ana Maria", time: "Domingo 09:00" },
-  { id: 2, name: "Turma B - Intermediário", students: 18, teacher: "José Carlos", time: "Domingo 09:00" },
-  { id: 3, name: "Turma C - Jovens", students: 32, teacher: "Maria Helena", time: "Domingo 09:00" },
+  { id: 1, name: "Turma A - Infantil (4-6 anos)", students: 25, teacher: "Ana Maria", time: "Domingo 09:00" },
+  { id: 2, name: "Turma B - Infantil (7-9 anos)", students: 22, teacher: "José Carlos", time: "Domingo 09:00" },
+  { id: 3, name: "Turma C - Intermediário (10-12 anos)", students: 18, teacher: "Maria Helena", time: "Domingo 09:00" },
+  { id: 4, name: "Turma D - Jovens (13-17 anos)", students: 32, teacher: "Paulo Santos", time: "Domingo 09:00" },
 ];
 
-const DarpeEbi = () => {
+const Ebi = () => {
   return (
     <MainLayout>
       <div className="space-y-6 pt-12 lg:pt-0">
         {/* Header */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground lg:text-3xl">DARPE / EBI</h1>
+            <h1 className="text-2xl font-bold text-foreground lg:text-3xl">EBI</h1>
             <p className="mt-1 text-muted-foreground">
-              Departamento de Assistência Religiosa e Ensino Bíblico Infantil
+              Ensino Bíblico Infantil - Educação e formação espiritual
             </p>
           </div>
           <Button className="gap-2">
@@ -28,7 +29,7 @@ const DarpeEbi = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-4">
           <div className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card">
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
               <BookOpen className="h-6 w-6 text-primary" />
@@ -56,6 +57,15 @@ const DarpeEbi = () => {
               <p className="text-sm text-muted-foreground">Professores</p>
             </div>
           </div>
+          <div className="flex items-center gap-4 rounded-xl bg-card p-4 shadow-card">
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-purple-500/10">
+              <Calendar className="h-6 w-6 text-purple-500" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">4</p>
+              <p className="text-sm text-muted-foreground">Aulas/semana</p>
+            </div>
+          </div>
         </div>
 
         {/* Tabs */}
@@ -65,6 +75,7 @@ const DarpeEbi = () => {
             <TabsTrigger value="alunos">Alunos</TabsTrigger>
             <TabsTrigger value="professores">Professores</TabsTrigger>
             <TabsTrigger value="materiais">Materiais</TabsTrigger>
+            <TabsTrigger value="presenca">Presença</TabsTrigger>
           </TabsList>
 
           <TabsContent value="turmas" className="space-y-4">
@@ -78,7 +89,7 @@ const DarpeEbi = () => {
                     <span className="text-xs text-muted-foreground">{cls.time}</span>
                   </div>
                   <h3 className="font-semibold text-card-foreground mb-1">{cls.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Professor: {cls.teacher}</p>
+                  <p className="text-sm text-muted-foreground mb-4">Professor(a): {cls.teacher}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-muted-foreground">
                       <Users className="inline h-4 w-4 mr-1" />
@@ -114,10 +125,18 @@ const DarpeEbi = () => {
               <p className="text-muted-foreground">Gerencie os materiais de ensino</p>
             </div>
           </TabsContent>
+
+          <TabsContent value="presenca">
+            <div className="rounded-xl bg-card p-8 shadow-card text-center">
+              <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="font-semibold mb-2">Controle de Presença</h3>
+              <p className="text-muted-foreground">Acompanhe a frequência dos alunos</p>
+            </div>
+          </TabsContent>
         </Tabs>
       </div>
     </MainLayout>
   );
 };
 
-export default DarpeEbi;
+export default Ebi;
