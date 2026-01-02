@@ -8,7 +8,9 @@ import {
   ListChecks,
   Menu,
   X,
-  Calendar
+  Calendar,
+  GraduationCap,
+  Heart
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -18,7 +20,8 @@ import { Button } from "@/components/ui/button";
 const menuItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Musical", url: "/musical", icon: Music },
-  { title: "DARPE/EBI", url: "/darpe-ebi", icon: BookOpen },
+  { title: "DARPE", url: "/darpe", icon: Heart },
+  { title: "EBI", url: "/ebi", icon: GraduationCap },
   { title: "Relatórios", url: "/relatorios", icon: FileText },
   { title: "Congregações", url: "/congregacoes", icon: Church },
   { title: "Ministério", url: "/ministerio", icon: Users },
