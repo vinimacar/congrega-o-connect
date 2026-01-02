@@ -1,7 +1,8 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Plus, Search, Music, Users, Calendar } from "lucide-react";
+import { Search, Music, Users, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { MusicianForm } from "@/components/forms";
 
 const musicians = [
   { id: 1, name: "João Silva", instrument: "Órgão", congregation: "Sede Central", status: "Ativo" },
@@ -23,10 +24,7 @@ const Musical = () => {
               Gestão de músicos e ensaios
             </p>
           </div>
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            Novo Músico
-          </Button>
+          <MusicianForm />
         </div>
 
         {/* Stats */}

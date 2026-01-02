@@ -1,7 +1,8 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Plus, Church, MapPin, Users, Phone } from "lucide-react";
+import { Church, MapPin, Users, Phone } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { CongregationForm } from "@/components/forms";
 
 const congregations = [
   { 
@@ -54,10 +55,7 @@ const Congregacoes = () => {
               Gestão das congregações e casas de oração
             </p>
           </div>
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            Nova Congregação
-          </Button>
+          <CongregationForm />
         </div>
 
         {/* Search */}

@@ -1,7 +1,8 @@
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Plus, Users, Shield, Calendar, Award } from "lucide-react";
+import { Users, Shield, Calendar, Award } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MinistryMemberForm } from "@/components/forms";
 
 const ministers = [
   { id: 1, name: "Ancião João Silva", role: "Ancião", congregation: "Sede Central", since: "2010" },
@@ -22,10 +23,7 @@ const Ministerio = () => {
               Gestão do corpo ministerial
             </p>
           </div>
-          <Button className="gap-2">
-            <Plus className="h-4 w-4" />
-            Novo Membro
-          </Button>
+          <MinistryMemberForm />
         </div>
 
         {/* Stats */}
