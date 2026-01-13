@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Congregação Connect</title>
+  <script>
+    // Redireciona para a página principal com hash
+    const path = window.location.pathname.replace('/congrega-o-connect', '');
+    if (path && path !== '/') {
+      window.location.replace('/congrega-o-connect/#' + path);
+    } else {
+      window.location.replace('/congrega-o-connect/');
+    }
+  </script>
+</head>
+<body>
+  <p>Redirecionando...</p>
+</body>
+</html>
