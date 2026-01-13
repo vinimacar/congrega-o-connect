@@ -112,89 +112,90 @@ ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
 -- Por padrão, permitir leitura para usuários autenticados
 
 -- Congregations
-CREATE POLICY "Permitir leitura de congregações para usuários autenticados"
+-- Permitindo acesso público (anônimo) temporariamente - adicione autenticação depois
+CREATE POLICY "Permitir leitura de congregações para todos"
     ON public.congregations FOR SELECT
-    TO authenticated
+    TO anon, authenticated
     USING (true);
 
-CREATE POLICY "Permitir inserção de congregações para usuários autenticados"
+CREATE POLICY "Permitir inserção de congregações para todos"
     ON public.congregations FOR INSERT
-    TO authenticated
+    TO anon, authenticated
     WITH CHECK (true);
 
-CREATE POLICY "Permitir atualização de congregações para usuários autenticados"
+CREATE POLICY "Permitir atualização de congregações para todos"
     ON public.congregations FOR UPDATE
-    TO authenticated
+    TO anon, authenticated
     USING (true)
     WITH CHECK (true);
 
-CREATE POLICY "Permitir exclusão de congregações para usuários autenticados"
+CREATE POLICY "Permitir exclusão de congregações para todos"
     ON public.congregations FOR DELETE
-    TO authenticated
+    TO anon, authenticated
     USING (true);
 
 -- Musicians
-CREATE POLICY "Permitir leitura de músicos para usuários autenticados"
+CREATE POLICY "Permitir leitura de músicos para todos"
     ON public.musicians FOR SELECT
-    TO authenticated
+    TO anon, authenticated
     USING (true);
 
-CREATE POLICY "Permitir inserção de músicos para usuários autenticados"
+CREATE POLICY "Permitir inserção de músicos para todos"
     ON public.musicians FOR INSERT
-    TO authenticated
+    TO anon, authenticated
     WITH CHECK (true);
 
-CREATE POLICY "Permitir atualização de músicos para usuários autenticados"
+CREATE POLICY "Permitir atualização de músicos para todos"
     ON public.musicians FOR UPDATE
-    TO authenticated
+    TO anon, authenticated
     USING (true)
     WITH CHECK (true);
 
-CREATE POLICY "Permitir exclusão de músicos para usuários autenticados"
+CREATE POLICY "Permitir exclusão de músicos para todos"
     ON public.musicians FOR DELETE
-    TO authenticated
+    TO anon, authenticated
     USING (true);
 
 -- Ministry Members
-CREATE POLICY "Permitir leitura de membros do ministério para usuários autenticados"
+CREATE POLICY "Permitir leitura de membros do ministério para todos"
     ON public.ministry_members FOR SELECT
-    TO authenticated
+    TO anon, authenticated
     USING (true);
 
-CREATE POLICY "Permitir inserção de membros do ministério para usuários autenticados"
+CREATE POLICY "Permitir inserção de membros do ministério para todos"
     ON public.ministry_members FOR INSERT
-    TO authenticated
+    TO anon, authenticated
     WITH CHECK (true);
 
-CREATE POLICY "Permitir atualização de membros do ministério para usuários autenticados"
+CREATE POLICY "Permitir atualização de membros do ministério para todos"
     ON public.ministry_members FOR UPDATE
-    TO authenticated
+    TO anon, authenticated
     USING (true)
     WITH CHECK (true);
 
-CREATE POLICY "Permitir exclusão de membros do ministério para usuários autenticados"
+CREATE POLICY "Permitir exclusão de membros do ministério para todos"
     ON public.ministry_members FOR DELETE
-    TO authenticated
+    TO anon, authenticated
     USING (true);
 
 -- Events
-CREATE POLICY "Permitir leitura de eventos para usuários autenticados"
+CREATE POLICY "Permitir leitura de eventos para todos"
     ON public.events FOR SELECT
-    TO authenticated
+    TO anon, authenticated
     USING (true);
 
-CREATE POLICY "Permitir inserção de eventos para usuários autenticados"
+CREATE POLICY "Permitir inserção de eventos para todos"
     ON public.events FOR INSERT
-    TO authenticated
+    TO anon, authenticated
     WITH CHECK (true);
 
-CREATE POLICY "Permitir atualização de eventos para usuários autenticados"
+CREATE POLICY "Permitir atualização de eventos para todos"
     ON public.events FOR UPDATE
-    TO authenticated
+    TO anon, authenticated
     USING (true)
     WITH CHECK (true);
 
-CREATE POLICY "Permitir exclusão de eventos para usuários autenticados"
+CREATE POLICY "Permitir exclusão de eventos para todos"
     ON public.events FOR DELETE
-    TO authenticated
+    TO anon, authenticated
     USING (true);
