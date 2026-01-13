@@ -1,8 +1,10 @@
-# Welcome to your Lovable project
+# CCB Gestão - Sistema de Gerenciamento de Congregações
 
-## Project info
+Sistema de gerenciamento para a Congregação Cristã no Brasil.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Acesso
+
+**URL**: https://vinimacar.github.io/congrega-o-connect/
 
 ## How can I edit this code?
 
