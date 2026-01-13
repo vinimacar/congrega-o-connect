@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Users } from "lucide-react";
+import { Users, CalendarIcon } from "lucide-react";
 import { ministryMemberSchema, MinistryMemberFormData } from "@/lib/schemas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -119,7 +118,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
-              {/* Nome */}
               <FormField
                 control={form.control}
                 name="name"
@@ -134,7 +132,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                 )}
               />
 
-              {/* Cargo */}
               <FormField
                 control={form.control}
                 name="role"
@@ -160,7 +157,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                 )}
               />
 
-              {/* Data de Apresentação/Ordenação */}
               <FormField
                 control={form.control}
                 name="presentationOrdinationDate"
@@ -202,7 +198,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                 )}
               />
 
-              {/* Apresentado/Ordenado Por */}
               <FormField
                 control={form.control}
                 name="presentedOrdainedBy"
@@ -217,7 +212,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                 )}
               />
 
-              {/* Congregação Principal */}
               <FormField
                 control={form.control}
                 name="mainCongregation"
@@ -243,7 +237,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                 )}
               />
 
-              {/* Igrejas que Atendem (apenas para Ancião e Diácono) */}
               {showServedCongregations && (
                 <FormField
                   control={form.control}
@@ -297,7 +290,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                 />
               )}
 
-              {/* Telefone */}
               <FormField
                 control={form.control}
                 name="phone"
@@ -312,7 +304,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                 )}
               />
 
-              {/* Email */}
               <FormField
                 control={form.control}
                 name="email"
@@ -327,7 +318,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                 )}
               />
 
-              {/* Observações */}
               <FormField
                 control={form.control}
                 name="notes"
@@ -356,53 +346,6 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                   form.reset();
                 }}
               >
-                Cancelar
-              </Button>
-              <Button type="submit">Cadastrar Membro</Button>
-            </div>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
-  );
-}
-                  <FormItem>
-                    <FormLabel>Ano de Início *</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="2020" 
-                        min={1900}
-                        max={new Date().getFullYear()}
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <FormField
-              control={form.control}
-              name="notes"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Observações</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Informações adicionais..."
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="flex justify-end gap-3 pt-4">
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancelar
               </Button>
               <Button type="submit">Cadastrar Membro</Button>
