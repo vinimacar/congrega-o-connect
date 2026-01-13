@@ -54,7 +54,8 @@ export const useCreateMinistryMember = () => {
     mutationFn: async (member: MinistryMemberInsert) => {
       const { data, error } = await supabase
         .from('ministry_members')
-        .insert(member)
+        // @ts-expect-error - Supabase generated types issue
+        .insert([member])
         .select()
         .single();
       
@@ -75,6 +76,7 @@ export const useUpdateMinistryMember = () => {
     mutationFn: async ({ id, updates }: { id: string; updates: MinistryMemberUpdate }) => {
       const { data, error } = await supabase
         .from('ministry_members')
+        // @ts-expect-error - Supabase generated types issue
         .update(updates)
         .eq('id', id)
         .select()

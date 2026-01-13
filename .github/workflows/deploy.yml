@@ -32,6 +32,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        # Secrets configurados em: Settings > Secrets and variables > Actions
+        # Necessário adicionar: VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}

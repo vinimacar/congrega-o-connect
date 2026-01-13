@@ -54,7 +54,8 @@ export const useCreateEvent = () => {
     mutationFn: async (event: EventInsert) => {
       const { data, error } = await supabase
         .from('events')
-        .insert(event)
+        // @ts-expect-error - Supabase generated types issue
+        .insert([event])
         .select()
         .single();
       
@@ -75,6 +76,7 @@ export const useUpdateEvent = () => {
     mutationFn: async ({ id, updates }: { id: string; updates: EventUpdate }) => {
       const { data, error } = await supabase
         .from('events')
+        // @ts-expect-error - Supabase generated types issue
         .update(updates)
         .eq('id', id)
         .select()

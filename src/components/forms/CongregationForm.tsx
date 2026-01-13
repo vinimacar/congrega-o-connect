@@ -98,6 +98,10 @@ export function CongregationForm({ trigger, congregation, mode = 'create', onSuc
 
   useEffect(() => {
     if (congregation && mode === 'edit') {
+      const validStatus = ["ativa", "em_construcao", "inativa"].includes(congregation.status) 
+        ? congregation.status as "ativa" | "em_construcao" | "inativa"
+        : "ativa";
+      
       form.reset({
         name: congregation.name || "",
         address: congregation.address || "",
@@ -106,7 +110,7 @@ export function CongregationForm({ trigger, congregation, mode = 'create', onSuc
         phone: congregation.phone || "",
         responsible: congregation.responsible || "",
         capacity: congregation.capacity,
-        status: congregation.status || "ativa",
+        status: validStatus,
         cultoDomingoManha: congregation.culto_domingo_manha || "",
         cultoDomingoNoite: congregation.culto_domingo_noite || "",
         cultoQuarta: congregation.culto_quarta || "",

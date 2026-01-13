@@ -5,7 +5,10 @@ import { Church, MapPin, Users, Phone, Edit2, Clock, CalendarDays, Loader2, Eye 
 import { Input } from "@/components/ui/input";
 import { CongregationForm } from "@/components/forms";
 import { useCongregations, useDeleteCongregation } from "@/hooks/useCongregations";
-import type { Congregation } from "@/types/congregation";
+import type { Database } from "@/lib/database.types";
+
+type Congregation = Database['public']['Tables']['congregations']['Row'];
+
 import {
   AlertDialog,
   AlertDialogAction,

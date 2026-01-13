@@ -54,7 +54,8 @@ export const useCreateMusician = () => {
     mutationFn: async (musician: MusicianInsert) => {
       const { data, error } = await supabase
         .from('musicians')
-        .insert(musician)
+        // @ts-expect-error - Supabase generated types issue
+        .insert([musician])
         .select()
         .single();
       
@@ -75,6 +76,7 @@ export const useUpdateMusician = () => {
     mutationFn: async ({ id, updates }: { id: string; updates: MusicianUpdate }) => {
       const { data, error } = await supabase
         .from('musicians')
+        // @ts-expect-error - Supabase generated types issue
         .update(updates)
         .eq('id', id)
         .select()

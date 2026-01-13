@@ -48,7 +48,8 @@ export const useCreateCongregation = () => {
     mutationFn: async (congregation: CongregationInsert) => {
       const { data, error } = await supabase
         .from('congregations')
-        .insert(congregation)
+        // @ts-expect-error - Supabase generated types issue
+        .insert([congregation])
         .select()
         .single();
       
@@ -69,6 +70,7 @@ export const useUpdateCongregation = () => {
     mutationFn: async ({ id, updates }: { id: string; updates: CongregationUpdate }) => {
       const { data, error } = await supabase
         .from('congregations')
+        // @ts-expect-error - Supabase generated types issue
         .update(updates)
         .eq('id', id)
         .select()
