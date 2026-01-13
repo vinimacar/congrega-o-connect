@@ -5,6 +5,7 @@ import type { Database } from '@/lib/database.types';
 type Musician = Database['public']['Tables']['musicians']['Row'];
 type MusicianInsert = Database['public']['Tables']['musicians']['Insert'];
 type MusicianUpdate = Database['public']['Tables']['musicians']['Update'];
+type Congregation = Database['public']['Tables']['congregations']['Row'];
 
 // Query para listar todos os músicos
 export const useMusicians = (congregationId?: string) => {
@@ -22,7 +23,7 @@ export const useMusicians = (congregationId?: string) => {
       const { data, error } = await query.order('name');
       
       if (error) throw error;
-      return data as (Musician & { congregation: any })[];
+      return data as (Musician & { congregation: Congregation })[];
     },
   });
 };
@@ -39,7 +40,7 @@ export const useMusician = (id: string) => {
         .single();
       
       if (error) throw error;
-      return data as Musician & { congregation: any };
+      return data as Musician & { congregation: Congregation };
     },
     enabled: !!id,
   });

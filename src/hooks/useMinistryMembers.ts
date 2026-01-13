@@ -5,6 +5,7 @@ import type { Database } from '@/lib/database.types';
 type MinistryMember = Database['public']['Tables']['ministry_members']['Row'];
 type MinistryMemberInsert = Database['public']['Tables']['ministry_members']['Insert'];
 type MinistryMemberUpdate = Database['public']['Tables']['ministry_members']['Update'];
+type Congregation = Database['public']['Tables']['congregations']['Row'];
 
 // Query para listar todos os membros do ministério
 export const useMinistryMembers = (congregationId?: string) => {
@@ -22,7 +23,7 @@ export const useMinistryMembers = (congregationId?: string) => {
       const { data, error } = await query.order('name');
       
       if (error) throw error;
-      return data as (MinistryMember & { congregation: any })[];
+      return data as (MinistryMember & { congregation: Congregation })[];
     },
   });
 };
@@ -39,7 +40,7 @@ export const useMinistryMember = (id: string) => {
         .single();
       
       if (error) throw error;
-      return data as MinistryMember & { congregation: any };
+      return data as MinistryMember & { congregation: Congregation };
     },
     enabled: !!id,
   });

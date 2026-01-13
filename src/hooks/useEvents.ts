@@ -5,6 +5,7 @@ import type { Database } from '@/lib/database.types';
 type Event = Database['public']['Tables']['events']['Row'];
 type EventInsert = Database['public']['Tables']['events']['Insert'];
 type EventUpdate = Database['public']['Tables']['events']['Update'];
+type Congregation = Database['public']['Tables']['congregations']['Row'];
 
 // Query para listar todos os eventos
 export const useEvents = (congregationId?: string) => {
@@ -22,7 +23,7 @@ export const useEvents = (congregationId?: string) => {
       const { data, error } = await query.order('date', { ascending: false });
       
       if (error) throw error;
-      return data as (Event & { congregation: any })[];
+      return data as (Event & { congregation: Congregation })[];
     },
   });
 };
@@ -39,7 +40,7 @@ export const useEvent = (id: string) => {
         .single();
       
       if (error) throw error;
-      return data as Event & { congregation: any };
+      return data as Event & { congregation: Congregation };
     },
     enabled: !!id,
   });
