@@ -12,12 +12,15 @@ import {
   GraduationCap,
   Heart,
   HandCoins,
-  Megaphone
+  Megaphone,
+  LogOut
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const menuItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -36,6 +39,24 @@ const menuItems = [
 export function AppSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Logout realizado",
+        description: "Até logo!",
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao fazer logout",
+        description: error.message,
+      });
+    }
+  };
 
   return (
     <>
@@ -103,7 +124,24 @@ export function AppSidebar() {
           </nav>
 
           {/* Footer */}
-          <div className="border-t border-sidebar-border p-4">
+          <div className="border-t border-sidebar-border p-4 space-y-3">
+            {user && (
+              <div className="px-2">
+                <p className="text-xs text-sidebar-foreground/70 mb-1">Conectado como:</p>
+                <p className="text-sm text-sidebar-foreground font-medium truncate">
+                  {user.email}
+                </p>
+              </div>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start text-sidebar-foreground/70 hover:text-sidebar-foreground hover:bg-sidebar-accent"
+              onClick={handleLogout}
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Sair
+            </Button>
             <p className="text-xs text-center text-sidebar-foreground/50">
               © 2024 CCB Gestão
             </p>
