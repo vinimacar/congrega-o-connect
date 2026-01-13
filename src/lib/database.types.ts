@@ -119,10 +119,12 @@ export interface Database {
           updated_at: string
           name: string
           role: 'anciao' | 'cooperador' | 'diacono' | 'diaconisa'
-          congregation_id: string
+          presentation_ordination_date: string
+          presented_ordained_by: string
+          main_congregation_id: string
+          served_congregations: Json | null
           phone: string | null
           email: string | null
-          start_year: number
           notes: string | null
         }
         Insert: {
@@ -131,10 +133,12 @@ export interface Database {
           updated_at?: string
           name: string
           role: 'anciao' | 'cooperador' | 'diacono' | 'diaconisa'
-          congregation_id: string
+          presentation_ordination_date: string
+          presented_ordained_by: string
+          main_congregation_id: string
+          served_congregations?: Json | null
           phone?: string | null
           email?: string | null
-          start_year: number
           notes?: string | null
         }
         Update: {
@@ -143,10 +147,12 @@ export interface Database {
           updated_at?: string
           name?: string
           role?: 'anciao' | 'cooperador' | 'diacono' | 'diaconisa'
-          congregation_id?: string
+          presentation_ordination_date?: string
+          presented_ordained_by?: string
+          main_congregation_id?: string
+          served_congregations?: Json | null
           phone?: string | null
           email?: string | null
-          start_year?: number
           notes?: string | null
         }
       }

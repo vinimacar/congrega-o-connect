@@ -49,10 +49,12 @@ CREATE TABLE IF NOT EXISTS public.ministry_members (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
     name VARCHAR(100) NOT NULL,
     role VARCHAR(20) NOT NULL CHECK (role IN ('anciao', 'cooperador', 'diacono', 'diaconisa')),
-    congregation_id UUID NOT NULL REFERENCES public.congregations(id) ON DELETE CASCADE,
+    presentation_ordination_date DATE NOT NULL,
+    presented_ordained_by VARCHAR(100) NOT NULL,
+    main_congregation_id UUID NOT NULL REFERENCES public.congregations(id) ON DELETE CASCADE,
+    served_congregations JSONB, -- Array de IDs de congregações que atendem (apenas para anciões e diáconos)
     phone VARCHAR(15),
     email VARCHAR(255),
-    start_year INTEGER NOT NULL,
     notes TEXT
 );
 
@@ -74,7 +76,7 @@ CREATE TABLE IF NOT EXISTS public.events (
 -- Índices para melhorar performance
 CREATE INDEX idx_musicians_congregation ON public.musicians(congregation_id);
 CREATE INDEX idx_musicians_status ON public.musicians(status);
-CREATE INDEX idx_ministry_members_congregation ON public.ministry_members(congregation_id);
+CREATE INDEX idx_ministry_members_main_congregation ON public.ministry_members(main_congregation_id);
 CREATE INDEX idx_ministry_members_role ON public.ministry_members(role);
 CREATE INDEX idx_events_congregation ON public.events(congregation_id);
 CREATE INDEX idx_events_date ON public.events(date);

@@ -55,10 +55,14 @@ export const ministryMemberSchema = z.object({
   role: z.enum(["anciao", "cooperador", "diacono", "diaconisa"], {
     required_error: "Selecione o cargo",
   }),
-  congregation: z.string().min(1, "Selecione uma congregação"),
+  presentationOrdinationDate: z.date({
+    required_error: "Selecione a data de apresentação/ordenação",
+  }),
+  presentedOrdainedBy: z.string().min(3, "Nome deve ter pelo menos 3 caracteres").max(100, "Nome muito longo"),
+  mainCongregation: z.string().min(1, "Selecione a congregação principal"),
+  servedCongregations: z.array(z.string()).optional(), // Array de IDs de congregações (apenas para anciões e diáconos)
   phone: z.string().min(10, "Telefone deve ter pelo menos 10 dígitos").max(15, "Telefone inválido").optional().or(z.literal("")),
   email: z.string().email("Email inválido").optional().or(z.literal("")),
-  startYear: z.coerce.number().min(1900, "Ano inválido").max(new Date().getFullYear(), "Ano não pode ser futuro"),
   notes: z.string().max(500, "Observações muito longas").optional(),
 });
 

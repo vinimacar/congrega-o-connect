@@ -14,16 +14,16 @@ export const useMinistryMembers = (congregationId?: string) => {
     queryFn: async () => {
       let query = supabase
         .from('ministry_members')
-        .select('*, congregation:congregations(*)');
+        .select('*, main_congregation:congregations!main_congregation_id(*)');
       
       if (congregationId) {
-        query = query.eq('congregation_id', congregationId);
+        query = query.eq('main_congregation_id', congregationId);
       }
       
       const { data, error } = await query.order('name');
       
       if (error) throw error;
-      return data as (MinistryMember & { congregation: Congregation })[];
+      return data as (MinistryMember & { main_congregation: Congregation })[];
     },
   });
 };
@@ -35,12 +35,12 @@ export const useMinistryMember = (id: string) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('ministry_members')
-        .select('*, congregation:congregations(*)')
+        .select('*, main_congregation:congregations!main_congregation_id(*)')
         .eq('id', id)
         .single();
       
       if (error) throw error;
-      return data as MinistryMember & { congregation: Congregation };
+      return data as MinistryMember & { main_congregation: Congregation };
     },
     enabled: !!id,
   });
