@@ -33,11 +33,11 @@ const Login = () => {
         description: "Login realizado com sucesso.",
       });
       navigate("/");
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Erro ao fazer login",
-        description: error.message || "Verifique suas credenciais e tente novamente.",
+        description: error instanceof Error ? error.message : "Verifique suas credenciais e tente novamente.",
       });
     } finally {
       setLoading(false);
@@ -54,11 +54,11 @@ const Login = () => {
         title: "Conta criada!",
         description: "Verifique seu e-mail para confirmar o cadastro.",
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Erro ao criar conta",
-        description: error.message || "Não foi possível criar sua conta.",
+        description: error instanceof Error ? error.message : "Não foi possível criar sua conta.",
       });
     } finally {
       setLoading(false);
@@ -69,11 +69,11 @@ const Login = () => {
     setLoading(true);
     try {
       await signInWithGoogle();
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Erro ao fazer login com Google",
-        description: error.message || "Não foi possível fazer login com o Google.",
+        description: error instanceof Error ? error.message : "Não foi possível fazer login com o Google.",
       });
       setLoading(false);
     }
@@ -199,6 +199,13 @@ const Login = () => {
             </TabsContent>
           </Tabs>
 
+          {/* 
+          Login com Google desabilitado - Para habilitar:
+          1. Acesse: https://supabase.com/dashboard/project/srzrzjranohroesrxeoq/auth/providers
+          2. Habilite o provedor "Google"
+          3. Configure as credenciais OAuth do Google Cloud Console
+          4. Descomente o código abaixo
+          
           <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />
@@ -237,6 +244,7 @@ const Login = () => {
             </svg>
             Google
           </Button>
+          */}
         </CardContent>
       </Card>
     </div>
