@@ -34,10 +34,23 @@ const Login = () => {
       });
       navigate("/");
     } catch (error: unknown) {
+      console.error("Login error:", error);
+      const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
+      
+      let userMessage = "Verifique suas credenciais e tente novamente.";
+      
+      if (errorMessage.includes("Invalid login credentials")) {
+        userMessage = "Email ou senha incorretos.";
+      } else if (errorMessage.includes("Email not confirmed")) {
+        userMessage = "Verifique seu email para confirmar o cadastro antes de fazer login.";
+      } else if (errorMessage.includes("User not found")) {
+        userMessage = "Usuário não encontrado. Crie uma conta primeiro.";
+      }
+      
       toast({
         variant: "destructive",
         title: "Erro ao fazer login",
-        description: error instanceof Error ? error.message : "Verifique suas credenciais e tente novamente.",
+        description: userMessage,
       });
     } finally {
       setLoading(false);
@@ -52,13 +65,24 @@ const Login = () => {
       await signUp(email, password);
       toast({
         title: "Conta criada!",
-        description: "Verifique seu e-mail para confirmar o cadastro.",
+        description: "Se a confirmação de email estiver habilitada, verifique sua caixa de entrada.",
       });
     } catch (error: unknown) {
+      console.error("Signup error:", error);
+      const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
+      
+      let userMessage = "Não foi possível criar sua conta.";
+      
+      if (errorMessage.includes("already registered")) {
+        userMessage = "Este email já está cadastrado. Tente fazer login.";
+      } else if (errorMessage.includes("Password should be")) {
+        userMessage = "A senha deve ter pelo menos 6 caracteres.";
+      }
+      
       toast({
         variant: "destructive",
         title: "Erro ao criar conta",
-        description: error instanceof Error ? error.message : "Não foi possível criar sua conta.",
+        description: userMessage,
       });
     } finally {
       setLoading(false);
