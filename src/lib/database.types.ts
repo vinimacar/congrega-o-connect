@@ -22,6 +22,13 @@ export interface Database {
           responsible: string
           capacity: number | null
           status: 'ativa' | 'em_construcao' | 'inativa'
+          culto_domingo_manha: string | null
+          culto_domingo_noite: string | null
+          culto_quarta: string | null
+          reuniao_jovens_dia: string | null
+          reuniao_jovens_horario: string | null
+          reuniao_menores_dia: string | null
+          reuniao_menores_horario: string | null
         }
         Insert: {
           id?: string
@@ -35,6 +42,13 @@ export interface Database {
           responsible: string
           capacity?: number | null
           status: 'ativa' | 'em_construcao' | 'inativa'
+          culto_domingo_manha?: string | null
+          culto_domingo_noite?: string | null
+          culto_quarta?: string | null
+          reuniao_jovens_dia?: string | null
+          reuniao_jovens_horario?: string | null
+          reuniao_menores_dia?: string | null
+          reuniao_menores_horario?: string | null
         }
         Update: {
           id?: string
@@ -48,6 +62,13 @@ export interface Database {
           responsible?: string
           capacity?: number | null
           status?: 'ativa' | 'em_construcao' | 'inativa'
+          culto_domingo_manha?: string | null
+          culto_domingo_noite?: string | null
+          culto_quarta?: string | null
+          reuniao_jovens_dia?: string | null
+          reuniao_jovens_horario?: string | null
+          reuniao_menores_dia?: string | null
+          reuniao_menores_horario?: string | null
         }
       }
       musicians: {

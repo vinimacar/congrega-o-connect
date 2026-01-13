@@ -24,6 +24,15 @@ export const congregationSchema = z.object({
   status: z.enum(["ativa", "em_construcao", "inativa"], {
     required_error: "Selecione o status",
   }),
+  // Horários de Cultos
+  cultoDomingoManha: z.string().optional().or(z.literal("")),
+  cultoDomingoNoite: z.string().optional().or(z.literal("")),
+  cultoQuarta: z.string().optional().or(z.literal("")),
+  // Reuniões
+  reuniaoJovensDia: z.string().optional().or(z.literal("")),
+  reuniaoJovensHorario: z.string().optional().or(z.literal("")),
+  reuniaoMenoresDia: z.string().optional().or(z.literal("")),
+  reuniaoMenoresHorario: z.string().optional().or(z.literal("")),
 });
 
 export const eventSchema = z.object({

@@ -15,7 +15,16 @@ CREATE TABLE IF NOT EXISTS public.congregations (
     phone VARCHAR(15),
     responsible VARCHAR(100) NOT NULL,
     capacity INTEGER,
-    status VARCHAR(20) NOT NULL CHECK (status IN ('ativa', 'em_construcao', 'inativa'))
+    status VARCHAR(20) NOT NULL CHECK (status IN ('ativa', 'em_construcao', 'inativa')),
+    -- Horários de Cultos
+    culto_domingo_manha VARCHAR(5),
+    culto_domingo_noite VARCHAR(5),
+    culto_quarta VARCHAR(5),
+    -- Reuniões
+    reuniao_jovens_dia VARCHAR(20),
+    reuniao_jovens_horario VARCHAR(5),
+    reuniao_menores_dia VARCHAR(20),
+    reuniao_menores_horario VARCHAR(5)
 );
 
 -- Tabela de Músicos
