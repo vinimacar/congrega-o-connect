@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Church, Loader2, Mail, Lock } from "lucide-react";
+import { Building2, Loader2, Mail, Lock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Login = () => {
@@ -80,12 +80,12 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 via-white to-emerald-50 p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
             <div className="h-16 w-16 rounded-full gradient-primary flex items-center justify-center shadow-glow">
-              <Church className="h-8 w-8 text-white" />
+              <Building2 className="h-8 w-8 text-white" />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">CCB Gestão</CardTitle>

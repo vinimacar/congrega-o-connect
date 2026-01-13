@@ -11,7 +11,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-teal-50 via-white to-emerald-50">
         <div className="text-center">
           <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
           <p className="text-muted-foreground">Carregando...</p>

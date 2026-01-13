@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Church, Clock } from "lucide-react";
+import { Home, Clock } from "lucide-react";
 import { congregationSchema, CongregationFormData } from "@/lib/schemas";
 import { useCreateCongregation, useUpdateCongregation } from "@/hooks/useCongregations";
 import { Button } from "@/components/ui/button";
@@ -176,7 +176,7 @@ export function CongregationForm({ trigger, congregation, mode = 'create', onSuc
       <DialogTrigger asChild>
         {trigger || (
           <Button className="gap-2">
-            <Church className="h-4 w-4" />
+            <Home className="h-4 w-4" />
             Nova Congregação
           </Button>
         )}
@@ -185,7 +185,7 @@ export function CongregationForm({ trigger, congregation, mode = 'create', onSuc
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-              <Church className="h-5 w-5 text-primary" />
+              <Home className="h-5 w-5 text-primary" />
             </div>
             {mode === 'edit' ? 'Editar Congregação' : 'Cadastrar Nova Congregação'}
           </DialogTitle>

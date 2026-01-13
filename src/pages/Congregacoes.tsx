@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Church, MapPin, Users, Phone, Edit2, Clock, CalendarDays, Loader2, Eye } from "lucide-react";
+import { Home, MapPin, Users, Phone, Edit2, Clock, CalendarDays, Loader2, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { CongregationForm } from "@/components/forms";
 import { useCongregations, useDeleteCongregation } from "@/hooks/useCongregations";
@@ -118,7 +118,7 @@ const Congregacoes = () => {
         {/* Grid */}
         {filteredCongregations.length === 0 ? (
           <div className="text-center py-12">
-            <Church className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            <Home className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <p className="text-muted-foreground">
               {searchTerm ? "Nenhuma congregação encontrada." : "Nenhuma congregação cadastrada ainda."}
             </p>
@@ -132,7 +132,7 @@ const Congregacoes = () => {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <Church className="h-6 w-6 text-primary" />
+                    <Home className="h-6 w-6 text-primary" />
                   </div>
                   <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ${
                     congregation.status === 'ativa' 
@@ -230,7 +230,7 @@ const Congregacoes = () => {
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <Church className="h-5 w-5 text-primary" />
+                <Home className="h-5 w-5 text-primary" />
                 {selectedCongregation?.name}
               </DialogTitle>
               <DialogDescription>

@@ -3,7 +3,7 @@ import { StatsCard } from "@/components/dashboard/StatsCard";
 import { EventsList } from "@/components/dashboard/EventsList";
 import { CollectionChart } from "@/components/dashboard/CollectionChart";
 import { QuickActions } from "@/components/dashboard/QuickActions";
-import { Church, Users, Music, Calendar } from "lucide-react";
+import { Building2, Users, Music, Calendar } from "lucide-react";
 
 const Index = () => {
   return (
@@ -23,7 +23,7 @@ const Index = () => {
             title="Congregações"
             value={12}
             description="Ativas no sistema"
-            icon={Church}
+            icon={Building2}
             trend={{ value: 8, isPositive: true }}
           />
           <StatsCard
