@@ -6,6 +6,32 @@ Sistema de gerenciamento para a Congregação Cristã no Brasil.
 
 **URL**: https://vinimacar.github.io/congrega-o-connect/
 
+## 🗄️ Configuração do Banco de Dados
+
+Para usar o sistema, você precisa configurar as tabelas no Supabase. É muito simples!
+
+### Configuração Rápida
+
+```bash
+# 1. Execute o comando
+npm run db:setup
+
+# 2. Copie o SQL gerado e cole no Supabase SQL Editor
+# Acesse: https://app.supabase.com → Seu Projeto → SQL Editor → New Query
+
+# 3. Pronto! As tabelas foram criadas automaticamente
+```
+
+📖 **Guias Detalhados:**
+- [Guia Rápido](./QUICK_START_DB.md) - 3 passos simples
+- [Guia Completo](./DATABASE_SETUP.md) - Documentação completa
+
+### Tabelas Criadas
+- ✅ **Congregações** - Cadastro de congregações
+- ✅ **Ministério** - Anciãos, Cooperadores, Diáconos e Diaconisas
+- ✅ Músicos - Orquestra e instrumentistas
+- ✅ Eventos - Agendamentos e cultos
+
 ## How can I edit this code?
 
 There are several ways of editing your application.

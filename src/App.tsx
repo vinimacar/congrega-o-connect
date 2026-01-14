@@ -18,8 +18,27 @@ import Listas from "./pages/Listas";
 import Agendamentos from "./pages/Agendamentos";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import { isSupabaseConfigured } from "@/lib/supabase";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // Não fazer retry se Supabase não estiver configurado
+      retry: isSupabaseConfigured ? 3 : false,
+      // Não refetch automaticamente se não houver backend
+      refetchOnWindowFocus: isSupabaseConfigured,
+      refetchOnReconnect: isSupabaseConfigured,
+      // Silenciar erros de query no console quando não há backend
+      onError: (error) => {
+        if (!isSupabaseConfigured) {
+          // Silenciar erros quando Supabase não está configurado
+          return;
+        }
+        console.error('Query error:', error);
+      },
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

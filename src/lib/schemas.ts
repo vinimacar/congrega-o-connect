@@ -66,7 +66,22 @@ export const ministryMemberSchema = z.object({
   notes: z.string().max(500, "Observações muito longas").optional(),
 });
 
+export const reforcoColetaSchema = z.object({
+  congregation: z.string().min(1, "Selecione uma congregação"),
+  eventType: z.enum(["culto_oficial", "rjm"], {
+    required_error: "Selecione o tipo de evento",
+  }),
+  date: z.date({
+    required_error: "Selecione uma data",
+  }),
+  time: z.string().min(1, "Informe o horário"),
+  objective: z.string().min(3, "Objetivo deve ter pelo menos 3 caracteres").max(200, "Objetivo muito longo"),
+  goal: z.coerce.number().min(1, "Meta deve ser maior que 0"),
+  notes: z.string().max(500, "Observações muito longas").optional().or(z.literal("")),
+});
+
 export type MusicianFormData = z.infer<typeof musicianSchema>;
 export type CongregationFormData = z.infer<typeof congregationSchema>;
 export type EventFormData = z.infer<typeof eventSchema>;
 export type MinistryMemberFormData = z.infer<typeof ministryMemberSchema>;
+export type ReforcoColetaFormData = z.infer<typeof reforcoColetaSchema>;
