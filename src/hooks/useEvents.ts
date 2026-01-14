@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import type { Database } from '@/lib/database.types';
 
 type Event = Database['public']['Tables']['events']['Row'];
@@ -11,7 +11,9 @@ type Congregation = Database['public']['Tables']['congregations']['Row'];
 export const useEvents = (congregationId?: string) => {
   return useQuery({
     queryKey: congregationId ? ['events', { congregationId }] : ['events'],
+    enabled: isSupabaseConfigured,
     queryFn: async () => {
+      if (!supabase) throw new Error('Supabase não configurado');
       let query = supabase
         .from('events')
         .select('*, congregation:congregations(*)');
@@ -32,7 +34,9 @@ export const useEvents = (congregationId?: string) => {
 export const useEvent = (id: string) => {
   return useQuery({
     queryKey: ['events', id],
+    enabled: !!id && isSupabaseConfigured,
     queryFn: async () => {
+      if (!supabase) throw new Error('Supabase não configurado');
       const { data, error } = await supabase
         .from('events')
         .select('*, congregation:congregations(*)')
@@ -42,7 +46,6 @@ export const useEvent = (id: string) => {
       if (error) throw error;
       return data as Event & { congregation: Congregation };
     },
-    enabled: !!id,
   });
 };
 

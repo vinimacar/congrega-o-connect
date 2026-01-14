@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import type { Database } from '@/lib/database.types';
 
 type MinistryMember = Database['public']['Tables']['ministry_members']['Row'];
@@ -11,7 +11,9 @@ type Congregation = Database['public']['Tables']['congregations']['Row'];
 export const useMinistryMembers = (congregationId?: string) => {
   return useQuery({
     queryKey: congregationId ? ['ministry_members', { congregationId }] : ['ministry_members'],
+    enabled: isSupabaseConfigured,
     queryFn: async () => {
+      if (!supabase) throw new Error('Supabase não configurado');
       let query = supabase
         .from('ministry_members')
         .select('*, main_congregation:congregations!main_congregation_id(*)');
@@ -32,7 +34,9 @@ export const useMinistryMembers = (congregationId?: string) => {
 export const useMinistryMember = (id: string) => {
   return useQuery({
     queryKey: ['ministry_members', id],
+    enabled: !!id && isSupabaseConfigured,
     queryFn: async () => {
+      if (!supabase) throw new Error('Supabase não configurado');
       const { data, error } = await supabase
         .from('ministry_members')
         .select('*, main_congregation:congregations!main_congregation_id(*)')
@@ -42,7 +46,6 @@ export const useMinistryMember = (id: string) => {
       if (error) throw error;
       return data as MinistryMember & { main_congregation: Congregation };
     },
-    enabled: !!id,
   });
 };
 
