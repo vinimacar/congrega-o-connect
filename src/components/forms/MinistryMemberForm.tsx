@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Users, CalendarIcon } from "lucide-react";
 import { ministryMemberSchema, MinistryMemberFormData } from "@/lib/schemas";
+import { useCreateMinistryMember } from "@/hooks/useMinistryMembers";
+import { useCongregations } from "@/hooks/useCongregations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,14 +40,6 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
-const congregations = [
-  { id: "1", name: "Sede Central" },
-  { id: "2", name: "Congregação Norte" },
-  { id: "3", name: "Congregação Sul" },
-  { id: "4", name: "Congregação Leste" },
-  { id: "5", name: "Congregação Oeste" },
-];
-
 const roles = [
   { value: "anciao", label: "Ancião" },
   { value: "cooperador", label: "Cooperador" },
@@ -55,12 +49,18 @@ const roles = [
 
 interface MinistryMemberFormProps {
   trigger?: React.ReactNode;
-  onSuccess?: (data: MinistryMemberFormData) => void;
+  onSuccess?: () => void;
 }
 
 export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormProps) {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
+  
+  // Buscar congregações do banco
+  const { data: congregations = [], isLoading: isLoadingCongregations } = useCongregations();
+  
+  // Mutation para criar membro
+  const createMinistryMember = useCreateMinistryMember();
 
   const form = useForm<MinistryMemberFormData>({
     resolver: zodResolver(ministryMemberSchema),
@@ -80,16 +80,40 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
   const watchedRole = form.watch("role");
   const showServedCongregations = watchedRole === "anciao" || watchedRole === "diacono";
 
-  const onSubmit = (data: MinistryMemberFormData) => {
-    console.log("Ministry member data:", data);
-    const roleLabel = roles.find(r => r.value === data.role)?.label;
-    toast({
-      title: "Membro cadastrado!",
-      description: `${roleLabel} ${data.name} foi adicionado com sucesso.`,
-    });
-    onSuccess?.(data);
-    form.reset();
-    setOpen(false);
+  const onSubmit = async (data: MinistryMemberFormData) => {
+    try {
+      // Preparar dados para enviar ao Supabase
+      const ministryMemberData = {
+        name: data.name,
+        role: data.role,
+        presentation_ordination_date: format(data.presentationOrdinationDate, 'yyyy-MM-dd'),
+        presented_ordained_by: data.presentedOrdainedBy,
+        main_congregation_id: data.mainCongregation,
+        served_congregations: data.servedCongregations || [],
+        phone: data.phone || null,
+        email: data.email || null,
+        notes: data.notes || null,
+      };
+
+      // Criar membro no banco
+      await createMinistryMember.mutateAsync(ministryMemberData);
+
+      const roleLabel = roles.find(r => r.value === data.role)?.label;
+      toast({
+        title: "Membro cadastrado!",
+        description: `${roleLabel} ${data.name} foi adicionado com sucesso.`,
+      });
+      
+      onSuccess?.();
+      form.reset();
+      setOpen(false);
+    } catch (error) {
+      toast({
+        title: "Erro ao cadastrar membro",
+        description: error instanceof Error ? error.message : "Ocorreu um erro inesperado.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -225,11 +249,21 @@ export function MinistryMemberForm({ trigger, onSuccess }: MinistryMemberFormPro
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {congregations.map((cong) => (
-                          <SelectItem key={cong.id} value={cong.id}>
-                            {cong.name}
+                        {isLoadingCongregations ? (
+                          <SelectItem value="loading" disabled>
+                            Carregando...
                           </SelectItem>
-                        ))}
+                        ) : congregations.length === 0 ? (
+                          <SelectItem value="empty" disabled>
+                            Nenhuma congregação cadastrada
+                          </SelectItem>
+                        ) : (
+                          congregations.map((cong) => (
+                            <SelectItem key={cong.id} value={cong.id}>
+                              {cong.name}
+                            </SelectItem>
+                          ))
+                        )}
                       </SelectContent>
                     </Select>
                     <FormMessage />

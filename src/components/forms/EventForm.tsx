@@ -6,6 +6,8 @@ import { ptBR } from "date-fns/locale";
 import { CalendarIcon, Calendar as CalendarIconOutline } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { eventSchema, EventFormData } from "@/lib/schemas";
+import { useCreateEvent } from "@/hooks/useEvents";
+import { useCongregations } from "@/hooks/useCongregations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -42,11 +44,6 @@ import {
 } from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 
-const congregations = [
-  "Sede Central", "Congregação Norte", "Congregação Sul", 
-  "Congregação Leste", "Congregação Oeste", "Todas Congregações"
-];
-
 const eventTypes = [
   { value: "culto", label: "Culto" },
   { value: "ensaio", label: "Ensaio" },
@@ -58,12 +55,18 @@ const eventTypes = [
 
 interface EventFormProps {
   trigger?: React.ReactNode;
-  onSuccess?: (data: EventFormData) => void;
+  onSuccess?: () => void;
 }
 
 export function EventForm({ trigger, onSuccess }: EventFormProps) {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
+  
+  // Buscar congregações do banco
+  const { data: congregations = [], isLoading: isLoadingCongregations } = useCongregations();
+  
+  // Mutation para criar evento
+  const createEvent = useCreateEvent();
 
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventSchema),
@@ -78,14 +81,38 @@ export function EventForm({ trigger, onSuccess }: EventFormProps) {
     },
   });
 
-  const onSubmit = (data: EventFormData) => {
-    toast({
-      title: "Evento agendado!",
-      description: `${data.title} foi criado para ${format(data.date, "dd/MM/yyyy")}.`,
-    });
-    onSuccess?.(data);
-    form.reset();
-    setOpen(false);
+  const onSubmit = async (data: EventFormData) => {
+    try {
+      // Preparar dados para enviar ao Supabase
+      const eventData = {
+        title: data.title,
+        type: data.type,
+        date: format(data.date, 'yyyy-MM-dd'),
+        time: data.time,
+        congregation_id: data.congregation,
+        description: data.description || null,
+        expected_attendees: data.expectedAttendees || null,
+        is_recurring: data.isRecurring,
+      };
+
+      // Criar evento no banco
+      await createEvent.mutateAsync(eventData);
+
+      toast({
+        title: "Evento agendado!",
+        description: `${data.title} foi criado para ${format(data.date, "dd/MM/yyyy")}.`,
+      });
+      
+      onSuccess?.();
+      form.reset();
+      setOpen(false);
+    } catch (error) {
+      toast({
+        title: "Erro ao agendar evento",
+        description: error instanceof Error ? error.message : "Ocorreu um erro inesperado.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -166,11 +193,21 @@ export function EventForm({ trigger, onSuccess }: EventFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {congregations.map((cong) => (
-                          <SelectItem key={cong} value={cong}>
-                            {cong}
+                        {isLoadingCongregations ? (
+                          <SelectItem value="loading" disabled>
+                            Carregando...
                           </SelectItem>
-                        ))}
+                        ) : congregations.length === 0 ? (
+                          <SelectItem value="empty" disabled>
+                            Nenhuma congregação cadastrada
+                          </SelectItem>
+                        ) : (
+                          congregations.map((cong) => (
+                            <SelectItem key={cong.id} value={cong.id}>
+                              {cong.name}
+                            </SelectItem>
+                          ))
+                        )}
                       </SelectContent>
                     </Select>
                     <FormMessage />

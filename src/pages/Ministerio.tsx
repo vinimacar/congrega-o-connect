@@ -1,17 +1,46 @@
+import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Button } from "@/components/ui/button";
-import { Users, Shield, Calendar, Award } from "lucide-react";
+import { Users, Shield, Calendar, Award, Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MinistryMemberForm } from "@/components/forms";
-
-const ministers = [
-  { id: 1, name: "Ancião João Silva", role: "Ancião", congregation: "Sede Central", since: "2010" },
-  { id: 2, name: "Coop. Pedro Santos", role: "Cooperador", congregation: "Sede Central", since: "2015" },
-  { id: 3, name: "Diác. Maria Costa", role: "Diaconisa", congregation: "Congregação Norte", since: "2018" },
-  { id: 4, name: "Ancião Carlos Oliveira", role: "Ancião", congregation: "Congregação Sul", since: "2012" },
-];
+import { useMinistryMembers } from "@/hooks/useMinistryMembers";
 
 const Ministerio = () => {
+  const [activeTab, setActiveTab] = useState("todos");
+  
+  // Buscar membros do ministério do banco
+  const { data: members = [], isLoading, refetch } = useMinistryMembers();
+  
+  // Calcular estatísticas
+  const anciaos = members.filter(m => m.role === "anciao").length;
+  const cooperadores = members.filter(m => m.role === "cooperador").length;
+  const diaconos = members.filter(m => m.role === "diacono" || m.role === "diaconisa").length;
+
+  // Filtrar membros com base na aba ativa
+  const filteredMembers = activeTab === "todos" 
+    ? members
+    : activeTab === "anciaos"
+    ? members.filter(m => m.role === "anciao")
+    : activeTab === "cooperadores"
+    ? members.filter(m => m.role === "cooperador")
+    : members.filter(m => m.role === "diacono" || m.role === "diaconisa");
+
+  const getRoleLabel = (role: string) => {
+    const labels: Record<string, string> = {
+      "anciao": "Ancião",
+      "cooperador": "Cooperador",
+      "diacono": "Diácono",
+      "diaconisa": "Diaconisa"
+    };
+    return labels[role] || role;
+  };
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    return date.getFullYear().toString();
+  };
   return (
     <MainLayout>
       <div className="space-y-6 pt-12 lg:pt-0">
@@ -23,7 +52,7 @@ const Ministerio = () => {
               Gestão do corpo ministerial
             </p>
           </div>
-          <MinistryMemberForm />
+          <MinistryMemberForm onSuccess={() => refetch()} />
         </div>
 
         {/* Stats */}
@@ -33,7 +62,7 @@ const Ministerio = () => {
               <Shield className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <p className="text-2xl font-bold">8</p>
+              <p className="text-2xl font-bold">{isLoading ? "..." : anciaos}</p>
               <p className="text-sm text-muted-foreground">Anciões</p>
             </div>
           </div>
@@ -42,7 +71,7 @@ const Ministerio = () => {
               <Users className="h-6 w-6 text-blue-500" />
             </div>
             <div>
-              <p className="text-2xl font-bold">15</p>
+              <p className="text-2xl font-bold">{isLoading ? "..." : cooperadores}</p>
               <p className="text-sm text-muted-foreground">Cooperadores</p>
             </div>
           </div>
@@ -51,7 +80,7 @@ const Ministerio = () => {
               <Award className="h-6 w-6 text-purple-500" />
             </div>
             <div>
-              <p className="text-2xl font-bold">12</p>
+              <p className="text-2xl font-bold">{isLoading ? "..." : diaconos}</p>
               <p className="text-sm text-muted-foreground">Diáconos</p>
             </div>
           </div>
@@ -60,14 +89,14 @@ const Ministerio = () => {
               <Calendar className="h-6 w-6 text-emerald-500" />
             </div>
             <div>
-              <p className="text-2xl font-bold">4</p>
-              <p className="text-sm text-muted-foreground">Reuniões/mês</p>
+              <p className="text-2xl font-bold">{members.length}</p>
+              <p className="text-sm text-muted-foreground">Total de Membros</p>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <Tabs defaultValue="todos" className="space-y-4">
+        <Tabs defaultValue="todos" value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           <TabsList>
             <TabsTrigger value="todos">Todos</TabsTrigger>
             <TabsTrigger value="anciaos">Anciões</TabsTrigger>
@@ -75,62 +104,49 @@ const Ministerio = () => {
             <TabsTrigger value="diaconos">Diáconos/as</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="todos">
+          <TabsContent value={activeTab}>
             <div className="rounded-xl bg-card shadow-card overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="border-b bg-muted/50">
-                    <tr>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Nome</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Cargo</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Congregação</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Desde</th>
-                      <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y">
-                    {ministers.map((minister) => (
-                      <tr key={minister.id} className="hover:bg-muted/30 transition-colors">
-                        <td className="px-6 py-4 font-medium">{minister.name}</td>
-                        <td className="px-6 py-4">
-                          <span className="inline-flex rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
-                            {minister.role}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-muted-foreground">{minister.congregation}</td>
-                        <td className="px-6 py-4 text-muted-foreground">{minister.since}</td>
-                        <td className="px-6 py-4">
-                          <Button variant="ghost" size="sm">Ver perfil</Button>
-                        </td>
+              {isLoading ? (
+                <div className="flex items-center justify-center p-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+              ) : filteredMembers.length === 0 ? (
+                <div className="p-12 text-center">
+                  <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground">Nenhum membro cadastrado</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="border-b bg-muted/50">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Nome</th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Cargo</th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Congregação</th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Desde</th>
+                        <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Ações</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="anciaos">
-            <div className="rounded-xl bg-card p-8 shadow-card text-center">
-              <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Lista de Anciões</h3>
-              <p className="text-muted-foreground">Visualize apenas os anciões</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="cooperadores">
-            <div className="rounded-xl bg-card p-8 shadow-card text-center">
-              <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Lista de Cooperadores</h3>
-              <p className="text-muted-foreground">Visualize apenas os cooperadores</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="diaconos">
-            <div className="rounded-xl bg-card p-8 shadow-card text-center">
-              <Award className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="font-semibold mb-2">Lista de Diáconos/as</h3>
-              <p className="text-muted-foreground">Visualize apenas os diáconos e diaconisas</p>
+                    </thead>
+                    <tbody className="divide-y">
+                      {filteredMembers.map((member) => (
+                        <tr key={member.id} className="hover:bg-muted/30 transition-colors">
+                          <td className="px-6 py-4 font-medium">{member.name}</td>
+                          <td className="px-6 py-4">
+                            <span className="inline-flex rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+                              {getRoleLabel(member.role)}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-muted-foreground">{member.main_congregation?.name || "-"}</td>
+                          <td className="px-6 py-4 text-muted-foreground">{formatDate(member.presentation_ordination_date)}</td>
+                          <td className="px-6 py-4">
+                            <Button variant="ghost" size="sm">Ver perfil</Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </TabsContent>
         </Tabs>

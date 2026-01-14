@@ -6,6 +6,8 @@ import { ptBR } from "date-fns/locale";
 import { CalendarIcon, Music } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { musicianSchema, MusicianFormData } from "@/lib/schemas";
+import { useCreateMusician } from "@/hooks/useMusicians";
+import { useCongregations } from "@/hooks/useCongregations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -46,19 +48,20 @@ const instruments = [
   "Trompa", "Tuba", "Acordeão", "Violão", "Bateria"
 ];
 
-const congregations = [
-  "Sede Central", "Congregação Norte", "Congregação Sul", 
-  "Congregação Leste", "Congregação Oeste"
-];
-
 interface MusicianFormProps {
   trigger?: React.ReactNode;
-  onSuccess?: (data: MusicianFormData) => void;
+  onSuccess?: () => void;
 }
 
 export function MusicianForm({ trigger, onSuccess }: MusicianFormProps) {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
+  
+  // Buscar congregações do banco
+  const { data: congregations = [], isLoading: isLoadingCongregations } = useCongregations();
+  
+  // Mutation para criar músico
+  const createMusician = useCreateMusician();
 
   const form = useForm<MusicianFormData>({
     resolver: zodResolver(musicianSchema),
@@ -73,14 +76,38 @@ export function MusicianForm({ trigger, onSuccess }: MusicianFormProps) {
     },
   });
 
-  const onSubmit = (data: MusicianFormData) => {
-    toast({
-      title: "Músico cadastrado!",
-      description: `${data.name} foi adicionado com sucesso.`,
-    });
-    onSuccess?.(data);
-    form.reset();
-    setOpen(false);
+  const onSubmit = async (data: MusicianFormData) => {
+    try {
+      // Preparar dados para enviar ao Supabase
+      const musicianData = {
+        name: data.name,
+        email: data.email || null,
+        phone: data.phone || null,
+        instrument: data.instrument,
+        congregation_id: data.congregation, // ID da congregação selecionada
+        status: data.status,
+        start_date: data.startDate ? format(data.startDate, 'yyyy-MM-dd') : null,
+        notes: data.notes || null,
+      };
+
+      // Criar músico no banco
+      await createMusician.mutateAsync(musicianData);
+
+      toast({
+        title: "Músico cadastrado!",
+        description: `${data.name} foi adicionado com sucesso.`,
+      });
+      
+      onSuccess?.();
+      form.reset();
+      setOpen(false);
+    } catch (error) {
+      toast({
+        title: "Erro ao cadastrar músico",
+        description: error instanceof Error ? error.message : "Ocorreu um erro inesperado.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -189,11 +216,21 @@ export function MusicianForm({ trigger, onSuccess }: MusicianFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {congregations.map((cong) => (
-                          <SelectItem key={cong} value={cong}>
-                            {cong}
+                        {isLoadingCongregations ? (
+                          <SelectItem value="loading" disabled>
+                            Carregando...
                           </SelectItem>
-                        ))}
+                        ) : congregations.length === 0 ? (
+                          <SelectItem value="empty" disabled>
+                            Nenhuma congregação cadastrada
+                          </SelectItem>
+                        ) : (
+                          congregations.map((cong) => (
+                            <SelectItem key={cong.id} value={cong.id}>
+                              {cong.name}
+                            </SelectItem>
+                          ))
+                        )}
                       </SelectContent>
                     </Select>
                     <FormMessage />
